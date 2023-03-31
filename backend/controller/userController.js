@@ -1,24 +1,34 @@
-const ErrorHandler = require('../utils/errorhandler')
+// ErrorHandler Utility Import
+const ErrorHandler = require('../utils/errorhandler');
+
+// CatchAsyncErrors MiddleWare Import
 const catchAsyncErrors = require('../middleware/catchAsyncErrors');
 
+// User Model Import
 const User = require('../models/userModel');
+
+// Its a separate module which creates jwtToken and stores in a cookie
 const sendToken = require('../utils/jwtToken');
 
-// send Email
+// send Email function import
 const sendEmail = require('../utils/sendEmail');
 
+// Crypto Import
+const crypto = require('crypto');
 
-exports.sampleRes = catchAsyncErrors(async(req, res, next)=> {
-    res.send("helloworld");
-})
-
+// Cloudinary Import
+const cloudinary = require('cloudinary')
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+    
+    // Cloudinary configuration will be added later
+
     const { name, email, password } = req.body;
 
     const user = await User.create({
         name, email, password,
+        // cloudinary parameters
     });
 
     // const token = user.getJWTToken();
@@ -27,13 +37,14 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     //     token
     // })
 
+    // Creating jwttoken and saving in cookie 
     sendToken(user, 201, res);
 });
 
 // Login User
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
     const { email, password } = req.body;
-    // checking if user is given password and email
+    // checking email & password is given or not
     if (!email || !password) {
         return next(new ErrorHandler("Please Enter Email and Password", 400));
     }
@@ -156,7 +167,7 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
 
 });
 
-// Update User Password
+// Update / Change User Password
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findById(req.user.id).select("+password");
 
@@ -236,9 +247,13 @@ exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
         useFindAndModify: false,
     });
 
+    if(!user){
+        return next(new ErrorHandler(`User does not exist with id: ${req.params.id}`, 400));
+    }
+
     res.status(200).json({
         success: true,
-        message: "User Profile Updated successfully"
+        message: "User Role Updated successfully"
     })
 });
 
@@ -262,6 +277,6 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
 exports.putdetail = catchAsyncErrors(async(req, res, next) => {
     res.status(200).json({
         success: true,
-        message: "WElcome"    
+        message: "Welcome"    
     })
 })

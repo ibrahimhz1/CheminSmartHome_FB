@@ -17,17 +17,13 @@ app.get("/about", (req, res)=> {
 app.get("/contact", (req, res)=> {
     res.status(200).send("<h1>This is Contact page</h1>");
 });
-app.get("*", (req, res)=> {
-    res.status(500).send("<h1>Error page : U visited the wrong endpoint</h1>")
-});
-
-
 
 const user = require('./routes/userRoute');
-const routes = require('./routes/staticContent');
+const device = require('./routes/deviceRoute');
 
 // api v1
 app.use("/api/v1", user);
+app.use("/api/v1", device);
 // app.use("/", routes)
 // Static Content Routes
 

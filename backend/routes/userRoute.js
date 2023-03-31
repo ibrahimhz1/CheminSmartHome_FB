@@ -1,21 +1,22 @@
 const express = require('express');
+
+// Router Definition
 const router = express.Router();
 
 // User controller
-const {sampleRes, registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updatePassword, updateProfile, getAllUsers, getSingleUser, deleteUser, updateUserRole } = require('../controller/userController');
+const { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updatePassword, updateProfile, getAllUsers, getSingleUser, updateUserRole, deleteUser } = require('../controller/userController');
 
 // required
 const { isAuthenticatedUser, authorizeRoles} = require('../middleware/auth');
 
-router.route('/').get(sampleRes)
-
+// Routes
 router.route("/register").post(registerUser);
 
 router.route("/login").post(loginUser);
 
 router.route("/password/forgot").post(forgotPassword);
 
-router.route("/password/reset/:token").get(resetPassword);
+router.route("/password/reset/:token").put(resetPassword);
 
 router.route("/logout").get(logoutUser);
 
