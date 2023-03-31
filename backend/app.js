@@ -21,11 +21,9 @@ app.get("/contact", (req, res)=> {
 const user = require('./routes/userRoute');
 const device = require('./routes/deviceRoute');
 
-// api v1
-app.use("/api/v1", user);
-app.use("/api/v1", device);
-// app.use("/", routes)
-// Static Content Routes
+// api
+app.use("/api", user);
+app.use("/api", device);
 
 // middleware for Error
 app.use(errorMiddleware);

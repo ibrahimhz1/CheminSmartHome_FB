@@ -9,6 +9,7 @@ const Device = require('../models/deviceModel');
 
 // CREATE DEVICE
 exports.createDevice = catchAsyncErrors(async(req, res, next) => {
+    req.body.user = req.user.id;
     const device = await Device.create(req.body);
 
     res.status(201).json({

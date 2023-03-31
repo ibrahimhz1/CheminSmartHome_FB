@@ -20,11 +20,20 @@ const deviceModel = new mongoose.Schema({
     speed: {
         type: Number,
         default: 1,                                     // 1 -> Slow , 2-> Normal, 3-> Fast // For Smart Fans
-        required: true,
     },
     temperature: {
         type: Number,
         enum: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],  // Temperature Range // For Smart AC
+    },
+    // house: {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: "House",
+    //     required: true
+    // },
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: true
     },
     createdAt: {
         type: Date,
