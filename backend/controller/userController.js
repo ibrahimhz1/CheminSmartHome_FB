@@ -19,12 +19,27 @@ const crypto = require('crypto');
 // Cloudinary Import
 const cloudinary = require('cloudinary')
 
+
+
+
+
+
+
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-    
+
     // Cloudinary configuration will be added later
 
     const { name, email, password } = req.body;
+
+    // creating
+    const resetPasswordToken = crypto
+        .createHash("sha256")
+        .update(req.params.token)
+        .digest("hex")
+
+    
+
 
     const user = await User.create({
         name, email, password,
@@ -105,7 +120,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
         await sendEmail({
             email: user.email,
-            subject: "NerdCentra Ecommerce Password Recovery",
+            subject: "Chemin Password Recovery",
             message,
         })
 
@@ -123,7 +138,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler(error.message, 500));
     }
 
-})
+});
 
 // Reset Password
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
@@ -154,7 +169,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
     sendToken(user, 200, res);
 
-})
+});
 
 // Get User Details
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
@@ -210,19 +225,19 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Get All Users -- Admin
-exports.getAllUsers = catchAsyncErrors( async(req, res, next)=>{
+exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
     const users = await User.find();
 
     res.status(200).json({
         success: true,
         users
     })
-} )
+})
 
 // Get Any Single Users -- Admin
-exports.getSingleUser = catchAsyncErrors( async(req, res, next)=> {
+exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    if(!user){
+    if (!user) {
         return next(new ErrorHandler(`User does not exist with ID ${req.params.id}`));
     }
 
@@ -230,7 +245,7 @@ exports.getSingleUser = catchAsyncErrors( async(req, res, next)=> {
         success: true,
         user
     })
-} )
+})
 
 // Update User Roles, Email, Names -- Admin
 exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
@@ -247,7 +262,7 @@ exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
         useFindAndModify: false,
     });
 
-    if(!user){
+    if (!user) {
         return next(new ErrorHandler(`User does not exist with id: ${req.params.id}`, 400));
     }
 
@@ -260,8 +275,8 @@ exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
 // Delete User -- Admin
 exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    
-    if(!user){
+
+    if (!user) {
         return next(new ErrorHandler(`User does not exist with Id: ${req.params.id}`));
     }
 
@@ -274,9 +289,9 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     })
 });
 
-exports.putdetail = catchAsyncErrors(async(req, res, next) => {
+exports.putdetail = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({
         success: true,
-        message: "Welcome"    
+        message: "Welcome"
     })
 })

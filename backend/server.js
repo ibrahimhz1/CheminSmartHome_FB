@@ -14,7 +14,9 @@ dotenv.config({path: "backend/config/config.env"});
 const connectDatabase = require('./config/dbconn');
 
 let server = null;
+
 // Database Connection
+// Then Server Listens otherwise throws error
 connectDatabase().then(()=>{
     server = app.listen(process.env.PORT, ()=> {
         console.log(`Server listening on http://localhost:${process.env.PORT || port}`);
@@ -23,9 +25,6 @@ connectDatabase().then(()=>{
     console.log(err);
 });
 
-
-
-// Server Listening
 
 
 // Unhandled Promise Rejection Error Handling -- Eg: Invalid Credentials: such as (Invalid DB connection String), etc... 
@@ -37,4 +36,4 @@ process.on("unhandledRejection", (err)=> {
             process.exit(1)
         })
     }
-})
+});
