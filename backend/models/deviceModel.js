@@ -25,11 +25,14 @@ const deviceModel = new mongoose.Schema({
         type: Number,
         enum: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],  // Temperature Range // For Smart AC
     },
-    // house: {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: "House",
-    //     required: true
-    // },
+    house: {
+        type: String,
+        required: true,
+    },
+    room: {
+        type: String,
+        required: true,
+    },
     user: {
         type: mongoose.Schema.ObjectId,
         ref: "User",

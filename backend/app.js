@@ -20,10 +20,14 @@ app.get("/contact", (req, res)=> {
 
 const user = require('./routes/userRoute');
 const device = require('./routes/deviceRoute');
+const house = require('./routes/houseRoutes');
+const room = require('./routes/roomRoutes');
 
 // api
 app.use("/api", user);
 app.use("/api", device);
+app.use("/api", house);
+app.use("/api", room);
 
 // middleware for Error
 app.use(errorMiddleware);
